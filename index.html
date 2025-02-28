@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Masca Győr - Betöltés</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- Betöltési képernyő -->
+<div id="loadingScreen">
+    <img id="logo" src="https://d2gt4h1eeousrn.cloudfront.net/81411912/slider-w8LyLQ/zcvTRlx-2000x2000.webp" alt="Logo">
+    <div id="spinner"></div>
+    <div id="noInternetMessage">Nincs internet kapcsolat, próbáld újra később.</div>
+    <div id="footerText">Copyright © 2025 Masca Győr. Minden jog fenntartva.</div>
+</div>
+
+<!-- Karbantartási üzenet -->
+<div id="maintenanceMessage">
+    <img id="maintenanceLogo" src="https://d2gt4h1eeousrn.cloudfront.net/81411912/slider-PdkLEU/jzDsV8X-2000x2000.webp" alt="Masca Győr Logo">
+    <h1>Hamarosan újra nyitunk.</h1>
+    <p>Éppen frissítjük a Masca Store-t. Nézz vissza később.</p>
+    <p>Karbantartás miatt zárva!</p>
+    <div id="footerText">Copyright © 2025 Masca Győr. Minden jog fenntartva.</div>
+</div>
+
+<script>
+    function isPWA() {
+        return window.matchMedia('(display-mode: standalone)').matches;
+    }
+
+    function checkInternetConnection() {
+        document.getElementById("noInternetMessage").style.display = navigator.onLine ? "none" : "block";
+    }
+
+    function checkMaintenance() {
+        const now = new Date();
+        const shutdownStart = new Date("2025-02-28T21:00:00");
+        const shutdownEnd = new Date("2025-02-28T21:01:00");
+
+        document.getElementById("maintenanceMessage").style.display = (now >= shutdownStart && now <= shutdownEnd) ? "flex" : "none";
+        checkInternetConnection();
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        checkMaintenance();
+
+        if (isPWA()) {
+            document.getElementById("loadingScreen").style.display = "flex";
+            setTimeout(() => document.getElementById("loadingScreen").style.display = "none", 1500);
+        }
+    });
+
+    window.addEventListener('online', checkInternetConnection);
+    window.addEventListener('offline', checkInternetConnection);
+    setInterval(checkMaintenance, 5000);
+</script>
+
+</body>
+</html>
